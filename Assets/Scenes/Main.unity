@@ -155,8 +155,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenSpawns: 2
   spawnRadius: 10
-  monsterToSpawn: {fileID: 0}
-  monsterSpawnEffect: {fileID: 0}
+  monsterToSpawn: {fileID: 738895799183662753, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
+  monsterSpawnEffect: {fileID: 7454158263514432492, guid: 001c9194ba7eebf4596a0e8a30998b38, type: 3}
 --- !u!65 &284362174
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9126049357036910500, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.34
       objectReference: {fileID: 0}
     - target: {fileID: 9126049357036910500, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
       propertyPath: m_LocalPosition.y
@@ -759,7 +759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9126049357036910500, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 4.98
       objectReference: {fileID: 0}
     - target: {fileID: 9126049357036910500, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
       propertyPath: m_LocalRotation.w
