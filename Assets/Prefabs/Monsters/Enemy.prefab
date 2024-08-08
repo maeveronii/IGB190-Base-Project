@@ -255,13 +255,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 649149781829607221, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3283565587305746487, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7177585854659834547}
   m_SourcePrefab: {fileID: 100100000, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
 --- !u!224 &3944647246806298849 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5106041549991803626, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
   m_PrefabInstance: {fileID: 8098174142110091787}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &5529182889723907616 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4384787444374996011, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+  m_PrefabInstance: {fileID: 8098174142110091787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6399302230778906343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2930890084029353196, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+  m_PrefabInstance: {fileID: 8098174142110091787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6770018516548950588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3283565587305746487, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+  m_PrefabInstance: {fileID: 8098174142110091787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7177585854659834547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770018516548950588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a5cb9ee1a51784c94d019ae6391305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  container: {fileID: 5529182889723907616}
+  healthBar: {fileID: 6399302230778906343}
+  offset: {x: 0, y: 2, z: 0}

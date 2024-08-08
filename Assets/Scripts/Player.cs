@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IDamageable
     // Player Stats
     public float health = 500;
     public float maxHealth = 500;
-    public float movementSpeed = 3.5f;
+    public float movementSpeed = 2.5f;
     public float attacksPerSecond = 1.0f;
     public float attackRange = 2.0f;
     public float attackDamage = 40.0f;
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, IDamageable
     private Vector3 abilityTargetLocation;
 
     public GameOver script1;
+    public UnitUI UnitUI;
 
     private void Start()
     {
@@ -59,12 +60,36 @@ public class Player : MonoBehaviour, IDamageable
     // Handle all update logic associated with the character's movement.
     private void UpdateMovement()
     {
-        animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
-        if (Input.GetMouseButton(0) && Time.time > canMoveAt)
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (UnitUI.Stamina > 0)
+            {
+                agentNavigation.speed = 5f; Debug.Log(agentNavigation.speed);
+                animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
+                UnitUI.RunStaminaDrain();
+            }
+            else
+            {
+                agentNavigation.speed = 2.5f; Debug.Log(agentNavigation.speed);
+                animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
+            }
+        }
+        else
+        {
+            agentNavigation.speed = 2.5f;
+            animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
+            UnitUI.RechargeStamina();
+        }
+
+        if (Input.GetMouseButton(0) && Time.time > canMoveAt) 
+        { 
             agentNavigation.SetDestination(Utilities.GetMouseWorldPosition());
+            UnitUI.RechargeStamina();
+        }
         else
         {
             agentNavigation.SetDestination(transform.position);
+            UnitUI.RechargeStamina();
         }
     }
 
@@ -135,6 +160,8 @@ public class Player : MonoBehaviour, IDamageable
         List<Monster> targets = Utilities.GetAllWithinRange<Monster>(hitPoint, attackRange);
         foreach (Monster target in targets)
             target.TakeDamage(attackDamage);
+
+        UnitUI.AttackStaminaDrain();
     }
 
     // Remove the specified amount of health from this unit, killing it if needed.
