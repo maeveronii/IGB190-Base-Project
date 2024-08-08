@@ -47,7 +47,11 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (isDead) return;
+        if (isDead)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         UpdateMovement();
         UpdateAbilityCasting();
     }

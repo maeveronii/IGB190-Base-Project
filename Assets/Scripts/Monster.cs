@@ -49,9 +49,14 @@ public class Monster : MonoBehaviour, IDamageable
     private void Update()
     {
         // If the player is dead, don't do anything.
-        if (player.isDead) return;
+        if (player.isDead)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         UpdateMovement();
         UpdateAbilityCasting();
+        
     }
 
     // Handle all update logic associated with the character's movement.
@@ -134,6 +139,7 @@ public class Monster : MonoBehaviour, IDamageable
         }
         Destroy(gameObject);
     }
+
 
     // Returns the current health percent of the character (a value between 0.0 and 1.0).
     public float GetCurrentHealthPercent()

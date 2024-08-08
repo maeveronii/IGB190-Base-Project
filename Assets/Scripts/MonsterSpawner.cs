@@ -7,6 +7,13 @@ public class MonsterSpawner : MonoBehaviour
     public Monster monsterToSpawn;
     public GameObject monsterSpawnEffect;
     private float nextSpawnAt;
+    private Player player;
+
+    void Start()
+    {
+        player = GameObject.FindObjectOfType<Player>();
+    }
+
 
     void Update()
     {
@@ -25,6 +32,11 @@ public class MonsterSpawner : MonoBehaviour
             // If a spawn effect has been assigned, spawn it.
             if (monsterSpawnEffect != null)
                 Instantiate(monsterSpawnEffect, spawnPosition, Quaternion.identity);
+        }
+        if (player.isDead)
+        {
+            gameObject.SetActive(false);
+            return;
         }
     }
 }
