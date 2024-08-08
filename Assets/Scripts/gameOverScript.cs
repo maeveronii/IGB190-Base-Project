@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class GameOver : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Text restartText;
-    public bool isGameOver = false;
     [SerializeField] private Text gameOverText;
+    public bool isGameOver = false;
 
-    //public Player script1;
-    //public Monster script2;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +21,7 @@ public class UIManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
 
     }
-
+     
     // Update is called once per frame
     void Update()
     {
@@ -56,11 +54,30 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void FadeMe()
+    {
+        StartCoroutine(DoFade());
+    }
+
+    IEnumerator DoFade()
+    {
+        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+        while (canvasGroup.alpha < 1)
+        {
+            //Until the fade in is fully done, fade it in
+            canvasGroup.alpha += Time.deltaTime / 100;
+            yield return null;
+        }
+        //Just in case
+        canvasGroup.interactable = false;
+        yield return null;
+    }
+        
+
     //controls game over canvas and there's a brief delay between main Game Over text and option to restart/quit text
     private IEnumerator GameOverSequence()
     {
-        /*script1.GameObject.SetActive(false);
-        script2.GameObject.SetActive(false);*/
+        FadeMe();
         gameOverPanel.SetActive(true);
         gameOverText.gameObject.SetActive(true);
         yield return new WaitForSeconds(3.0f);

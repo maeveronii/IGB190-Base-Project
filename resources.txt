@@ -1,4 +1,4 @@
 RESOURCES:
 
 Mixamo - UNARMED EQUIP UNDERARM 
-Unity Assets - https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/orc-caster-and-fighter-pack-108361#releases
+Unity Assets - Orc Pack - https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/orc-caster-and-fighter-pack-108361#releases

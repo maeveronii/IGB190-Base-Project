@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IDamageable
     private float finishAbilityCastAt;
     private Vector3 abilityTargetLocation;
 
-    public UIManager script1;
+    public GameOver script1;
 
     private void Start()
     {
@@ -152,7 +152,6 @@ public class Player : MonoBehaviour, IDamageable
         agentNavigation.SetDestination(transform.position);
         animator.SetTrigger("Die");
         script1.isGameOver = true;
-        //StartCoroutine(RestartLevel());
     }
 
     // Returns the current health percent of the character (a value between 0.0 and 1.0).
@@ -161,11 +160,4 @@ public class Player : MonoBehaviour, IDamageable
         return health / maxHealth;
     }
 
-    // Handles restarting the level when the player dies.
-    /*
-    private IEnumerator RestartLevel()
-    {
-        yield return new WaitForSeconds(5.0f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }*/
 }
