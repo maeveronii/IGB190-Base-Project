@@ -40,6 +40,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         agentNavigation = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        animator.Play("Unarmed Equip Underarm");
     }
 
     private void Update()
