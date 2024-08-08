@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenSpawns: 2.75
   spawnRadius: 10
-  monsterToSpawn: {fileID: 763734865}
+  monsterToSpawn: {fileID: 738895799183662753, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
   monsterSpawnEffect: {fileID: 7454158263514432492, guid: 001c9194ba7eebf4596a0e8a30998b38, type: 3}
 --- !u!65 &284362174
 BoxCollider:
@@ -274,17 +274,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 710199371}
   m_CullTransparentMesh: 1
---- !u!114 &763734865 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 738895799183662753, guid: fa4d80b19b56ad34b92cd8244ff9a203, type: 3}
-  m_PrefabInstance: {fileID: 3043853541753155294}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29504042a5ec43444808ed7bb5b0c985, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &811593426
 GameObject:
   m_ObjectHideFlags: 0
