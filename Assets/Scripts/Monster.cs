@@ -8,8 +8,8 @@ public class Monster : MonoBehaviour, IDamageable
     public float health = 100;
     public float maxHealth = 100;
     public float movementSpeed = 3.5f;
-    public float attacksPerSecond = 1.0f;
-    public float attackRange = 2.0f;
+    public float attacksPerSecond = 0.85f;
+    public float attackRange = 1.0f;
     public float attackDamage = 10.0f;
 
     // Store a reference to the player for easy access.
@@ -20,9 +20,10 @@ public class Monster : MonoBehaviour, IDamageable
     private float canMoveAt;
 
     // Constants to prevent magic numbers in the code. Makes it easier to edit later.
-    private const float MOVEMENT_DELAY_AFTER_CASTING = 1.5f;
+    private const float MOVEMENT_DELAY_AFTER_CASTING = 1.0f;
     private const float TURNING_SPEED = 10.0f;
     private const float TIME_BEFORE_CORPSE_DESTROYED = 5.0f;
+    
 
     // Cache references to important components for easy access later.
     private NavMeshAgent agentNavigation;
@@ -32,6 +33,7 @@ public class Monster : MonoBehaviour, IDamageable
     private enum Ability { Slash, /* Add more abilities in here! */ }
     private Ability? abilityBeingCast = null;
     private float finishAbilityCastAt;
+    
 
     // Perform required setup actions.
     private void Start()
@@ -90,7 +92,7 @@ public class Monster : MonoBehaviour, IDamageable
         abilityBeingCast = Ability.Slash;
 
         // Play the appropriate ability animation at the correct speed.
-        animator.CrossFadeInFixedTime("Attack", 0.2f);
+        animator.CrossFadeInFixedTime("Attack", 0.2f); 
         animator.SetFloat("AttackSpeed", attacksPerSecond);
 
         // Calculate when the ability will finish casting, and when the player can next cast and move.
