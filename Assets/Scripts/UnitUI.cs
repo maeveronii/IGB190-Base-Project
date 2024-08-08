@@ -11,6 +11,7 @@ public class UnitUI : MonoBehaviour
     public Vector3 offset = new Vector3(0, 2, 0);
     private IDamageable trackedDamageable;
     private Transform trackedTransform;
+    private Player player;
 
     public Image StaminaBar;
     public float Stamina, MaxStamina;
@@ -22,11 +23,19 @@ public class UnitUI : MonoBehaviour
     // Cache initial references to the unit and damageable interface.
     private void Awake()
     {
-        trackedDamageable = GetComponentInParent<IDamageable>();
-        trackedTransform = transform.parent;
+        player = GameObject.FindObjectOfType<Player>();
+        trackedDamageable = player.GetComponent<IDamageable>();
+        //trackedTransform = transform.parent;
     }
  
-
+    public void Update()
+    {
+        if (player.isDead)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+    }
     //drain stamina while attacking
     public void AttackStaminaDrain()
     {
@@ -61,8 +70,8 @@ public class UnitUI : MonoBehaviour
     private void LateUpdate()
     {
         // Move the health bar to the correct screen position.
-        Vector3 world = trackedTransform.position + offset;
-        container.anchoredPosition = Camera.main.WorldToScreenPoint(world);
+        //Vector3 world = trackedTransform.position + offset;
+        //container.anchoredPosition = Camera.main.WorldToScreenPoint(world);
 
         // Update the amount of the red health bar which is visible.
         healthBar.fillAmount = trackedDamageable.GetCurrentHealthPercent();

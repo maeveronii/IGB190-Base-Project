@@ -37,7 +37,7 @@ public class Player : MonoBehaviour, IDamageable
     private Vector3 abilityTargetLocation;
 
     public GameOver script1;
-    public UnitUI UnitUI;
+    public UnitUI UIScript;
 
     private void Start()
     {
@@ -62,15 +62,15 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (UnitUI.Stamina > 0)
+            if (UIScript.Stamina > 0)
             {
-                agentNavigation.speed = 5f; Debug.Log(agentNavigation.speed);
+                agentNavigation.speed = 5f; 
                 animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
-                UnitUI.RunStaminaDrain();
+                UIScript.RunStaminaDrain();
             }
             else
             {
-                agentNavigation.speed = 2.5f; Debug.Log(agentNavigation.speed);
+                agentNavigation.speed = 2.5f; 
                 animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
             }
         }
@@ -78,18 +78,18 @@ public class Player : MonoBehaviour, IDamageable
         {
             agentNavigation.speed = 2.5f;
             animator.SetFloat("Speed", agentNavigation.velocity.magnitude);
-            UnitUI.RechargeStamina();
+            UIScript.RechargeStamina();
         }
 
         if (Input.GetMouseButton(0) && Time.time > canMoveAt) 
         { 
             agentNavigation.SetDestination(Utilities.GetMouseWorldPosition());
-            UnitUI.RechargeStamina();
+            UIScript.RechargeStamina();
         }
         else
         {
             agentNavigation.SetDestination(transform.position);
-            UnitUI.RechargeStamina();
+            UIScript.RechargeStamina();
         }
     }
 
@@ -161,7 +161,7 @@ public class Player : MonoBehaviour, IDamageable
         foreach (Monster target in targets)
             target.TakeDamage(attackDamage);
 
-        UnitUI.AttackStaminaDrain();
+        UIScript.AttackStaminaDrain();
     }
 
     // Remove the specified amount of health from this unit, killing it if needed.
