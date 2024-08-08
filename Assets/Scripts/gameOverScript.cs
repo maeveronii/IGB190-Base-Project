@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     public bool isGameOver = false;
     [SerializeField] private Text gameOverText;
 
+    //public Player script1;
+    //public Monster script2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +38,7 @@ public class UIManager : MonoBehaviour
         //If game is over
         if (isGameOver)
         {
+            StartCoroutine(GameOverSequence());
             //If R is hit, restart the current scene
             if (Input.GetKeyDown(KeyCode.R))
             {
@@ -55,10 +59,11 @@ public class UIManager : MonoBehaviour
     //controls game over canvas and there's a brief delay between main Game Over text and option to restart/quit text
     private IEnumerator GameOverSequence()
     {
+        /*script1.GameObject.SetActive(false);
+        script2.GameObject.SetActive(false);*/
         gameOverPanel.SetActive(true);
         gameOverText.gameObject.SetActive(true);
-        yield return new WaitForSeconds(5.0f);
-
+        yield return new WaitForSeconds(3.0f);
         restartText.gameObject.SetActive(true);
     }
 }
