@@ -26,8 +26,12 @@ public class MonsterSpawner : MonoBehaviour
             // Calculate when the next monster should be spawned.
             nextSpawnAt = Time.time + timeBetweenSpawns;
 
-            // Spawn the monster at the correct spawn location.
-            Instantiate(monsterToSpawn.gameObject, spawnPosition, transform.rotation);
+            // Spawn the monster at the correct spawn location (and make its own game object)
+            GameObject clones = Instantiate(monsterToSpawn.gameObject, spawnPosition, transform.rotation);
+
+            //Created clones are children of the monster spawner
+            clones.transform.parent = this.transform;
+
 
             // If a spawn effect has been assigned, spawn it.
             if (monsterSpawnEffect != null)

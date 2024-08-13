@@ -22,6 +22,10 @@ public class Player : MonoBehaviour, IDamageable
     private float canCastAt;
     private float canMoveAt;
 
+    //movement
+    public bool isStopped;
+    public bool froze;
+
     // Constants to prevent magic numbers in the code. Makes it easier to edit later.
     private const float MOVEMENT_DELAY_AFTER_CASTING = 0.2f;
     private const float TURNING_SPEED = 10.0f;
@@ -43,7 +47,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         agentNavigation = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
-        animator.Play("Unarmed Equip Underarm");
+        StartCoroutine(PlayingAnimationAfterSpawning());
     }
 
     private void Update()
@@ -55,6 +59,14 @@ public class Player : MonoBehaviour, IDamageable
         }
         UpdateMovement();
         UpdateAbilityCasting();
+    }
+
+    IEnumerator PlayingAnimationAfterSpawning()
+    {
+        animator.Play("Crouch To Stand");
+        agentNavigation.isStopped = true;
+        yield return new WaitForSeconds(5);
+        agentNavigation.isStopped = false;
     }
 
     // Handle all update logic associated with the character's movement.

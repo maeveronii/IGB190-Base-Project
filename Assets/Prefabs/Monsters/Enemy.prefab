@@ -70,7 +70,7 @@ NavMeshAgent:
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 720
+  m_AngularSpeed: 1000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -171,9 +171,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9126049357036910500}
     m_Modifications:
+    - target: {fileID: 3159055281455562901, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3283565587305746487, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
       propertyPath: m_Name
       value: UnitUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3283565587305746487, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3616588122910009955, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5106041549991803626, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
       propertyPath: m_Pivot.x
@@ -254,6 +266,10 @@ PrefabInstance:
     - target: {fileID: 5106041549991803626, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026475515257644635, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 649149781829607221, guid: 7b23ce9f0b5404d41a7a1415d8bda162, type: 3}
