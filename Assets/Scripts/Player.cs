@@ -173,6 +173,11 @@ public class Player : MonoBehaviour, IDamageable
         foreach (Monster target in targets)
             target.TakeDamage(attackDamage);
 
+        List<MonsterSpawner> targets2 = Utilities.GetAllWithinRange<MonsterSpawner>(hitPoint, attackRange);
+        foreach (MonsterSpawner target in targets2)
+            target.TakeDamage(attackDamage);
+
+
         UIScript.AttackStaminaDrain();
     }
 

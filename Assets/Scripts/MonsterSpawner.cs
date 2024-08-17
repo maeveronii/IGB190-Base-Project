@@ -1,17 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
-public class MonsterSpawner : MonoBehaviour
+public class MonsterSpawner : MonoBehaviour, IDamageable
 {
     public float timeBetweenSpawns = 2.0f;
     public float spawnRadius = 10.0f;
     public Monster monsterToSpawn;
     public GameObject monsterSpawnEffect;
+    
+
+    //new settings
+    public float health = 2000f;
+    public float maxHealth = 2000f;
+    private const float TIME_BEFORE_CORPSE_DESTROYED = 0.5f; 
+    private Animator animator;
+    private ParticleSystem explosionEffect;
+    
+
+
     private float nextSpawnAt;
     private Player player;
 
     void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
+        animator = GetComponentInChildren<Animator>();
+        explosionEffect = GameObject.Find("Explosion").GetComponent<ParticleSystem>();
+
     }
 
 
@@ -43,4 +61,29 @@ public class MonsterSpawner : MonoBehaviour
             return;
         }
     }
+
+    public virtual void TakeDamage(float amount)
+    {
+        health -= amount;
+        if (health <= 0)
+            Kill();
+    }
+
+    public virtual void Kill()
+    {
+        foreach (Transform child in this.transform)
+        {
+            monsterToSpawn.Kill();
+            Debug.Log("dead!");
+        }
+        explosionEffect.Play();
+        Destroy(gameObject, TIME_BEFORE_CORPSE_DESTROYED);
+    }
+
+    public float GetCurrentHealthPercent()
+    {
+        return health / maxHealth;
+    }
+
+
 }
