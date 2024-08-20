@@ -10,6 +10,8 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
     public float spawnRadius = 10.0f;
     public Monster monsterToSpawn;
     public GameObject monsterSpawnEffect;
+
+    public spawnerUI spawnerUIl;
     
 
     //new settings
@@ -18,11 +20,14 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
     private const float TIME_BEFORE_CORPSE_DESTROYED = 0.5f; 
     private Animator animator;
     private ParticleSystem explosionEffect;
+    [HideInInspector] public bool isDead;
     
 
 
     private float nextSpawnAt;
     private Player player;
+
+    public GameObject[] monstersArray;
 
     void Start()
     {
@@ -45,10 +50,10 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
             nextSpawnAt = Time.time + timeBetweenSpawns;
 
             // Spawn the monster at the correct spawn location (and make its own game object)
-            GameObject clones = Instantiate(monsterToSpawn.gameObject, spawnPosition, transform.rotation);
+            GameObject clone = Instantiate(monsterToSpawn.gameObject, spawnPosition, transform.rotation);
 
             //Created clones are children of the monster spawner
-            clones.transform.parent = this.transform;
+            clone.transform.parent = this.transform;
 
 
             // If a spawn effect has been assigned, spawn it.
@@ -60,6 +65,7 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
             gameObject.SetActive(false);
             return;
         }
+        monstersArray = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
     public virtual void TakeDamage(float amount)
@@ -71,11 +77,13 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
 
     public virtual void Kill()
     {
-        foreach (Transform child in this.transform)
+        Monster[] monsters = transform.GetComponentsInChildren<Monster>();
+        foreach (Monster monster in monsters)
         {
-            monsterToSpawn.Kill();
-            Debug.Log("dead!");
+            monster.Kill();
         }
+       
+        isDead = true;
         explosionEffect.Play();
         Destroy(gameObject, TIME_BEFORE_CORPSE_DESTROYED);
     }
