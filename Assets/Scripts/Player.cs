@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -11,12 +12,16 @@ public class Player : MonoBehaviour, IDamageable
     public float maxHealth = 500;
     public float movementSpeed = 2.5f;
     public float attacksPerSecond = 1.0f;
+    public float attacksPerSecondFire = 0.2f;
+    public float attackRangeFire = 4.0f;
+    public float attackDamageFire = 50.0f;
     public float attackRange = 2.0f;
     public float attackDamage = 40.0f;
     [HideInInspector] public bool isDead;
 
     // Visual Effects
     public GameObject slashEffect;
+    public GameObject fireEffect;
 
     // Variables to control when the unit can attack and move.
     private float canCastAt;
@@ -28,20 +33,22 @@ public class Player : MonoBehaviour, IDamageable
 
     // Constants to prevent magic numbers in the code. Makes it easier to edit later.
     private const float MOVEMENT_DELAY_AFTER_CASTING = 0.2f;
-    private const float TURNING_SPEED = 10.0f;
+    private const float MOVEMENT_DELAY_AFTER_CASTING_FIRE = 0.75f;
+    private const float TURNING_SPEED = 15.0f;
 
     // Cache references to important components for easy access later.
     private NavMeshAgent agentNavigation;
     private Animator animator;
 
     // Variables to control ability casting.
-    private enum Ability { Cleave, /* Add more abilities in here! */ }
+    private enum Ability { Cleave, Fire/* Add more abilities in here! */ }
     private Ability? abilityBeingCast = null;
     private float finishAbilityCastAt;
     private Vector3 abilityTargetLocation;
 
     public GameOver script1;
     public UnitUI UIScript;
+    public MonsterSpawner MonsterSpawnerScript;
 
     private void Start()
     {
@@ -111,6 +118,12 @@ public class Player : MonoBehaviour, IDamageable
         // If the right click button is held and the player can cast, start a basic attack cast.
         if (Input.GetMouseButton(1) && Time.time > canCastAt)
             StartCastingCleave();
+        
+        if(Input.GetKeyDown(KeyCode.E) && Time.time > canCastAt)
+            if (UIScript.Stamina > 50)
+            {
+                StartCastingFire();
+            }
 
         // If the current ability has reached the end of its cast, run the appropriate actions for the ability.
         if (abilityBeingCast != null && Time.time > finishAbilityCastAt)
@@ -121,12 +134,17 @@ public class Player : MonoBehaviour, IDamageable
                     FinishCastingCleave();
                     break;
 
-                    // Add additional cases here for other abilities!
+                case Ability.Fire:
+                    if (UIScript.Stamina > 50)
+                    {
+                        FinishCastingFire();
+                    }
+                    break;
             };
         }
 
         // If a cast is in progress, have the player face towards the target location.
-        if (abilityBeingCast != null)
+        if (abilityBeingCast != null && abilityBeingCast == Ability.Cleave)
         {
             Quaternion look = Quaternion.LookRotation((abilityTargetLocation - transform.position).normalized);
             transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime * TURNING_SPEED);
@@ -179,6 +197,52 @@ public class Player : MonoBehaviour, IDamageable
 
 
         UIScript.AttackStaminaDrain();
+    }
+
+    private void StartCastingFire()
+    {
+        // Stop the character from moving while they attack.
+        agentNavigation.SetDestination(transform.position);
+
+        // Set the ability being cast to the cleave ability.
+        abilityBeingCast = Ability.Fire;
+
+        // Play the appropriate ability animation at the correct speed.
+        animator.CrossFadeInFixedTime("Fire Attack", 2.0f);
+        animator.SetFloat("AttackSpeedFire", attacksPerSecondFire);
+
+        // Calculate when the ability will finish casting, and when the player can next cast and move.
+        float castTime = 1.5f / attacksPerSecondFire;
+        canCastAt = Time.time + 4.5f;
+        finishAbilityCastAt = Time.time + 0.4f * castTime;
+        canMoveAt = finishAbilityCastAt + MOVEMENT_DELAY_AFTER_CASTING_FIRE;
+    }
+
+    private void FinishCastingFire()
+    {
+        // Clear the ability currently being cast.
+        abilityBeingCast = null;
+
+        // Create the slash visual and destroy it after it plays.
+        if (fireEffect != null)
+        {
+            GameObject fireVisual = Instantiate(fireEffect, transform.position, transform.rotation);
+            Destroy(fireVisual, 1.0f);
+        }
+
+        // Find all the targets that should be hit by the attack and damage them.
+        Vector3 hitPoint = transform.position;
+        List<Monster> targets = Utilities.GetAllWithinRange<Monster>(hitPoint, attackRangeFire);
+        foreach (Monster target in targets)
+            target.TakeDamage(attackDamageFire);
+
+        List<MonsterSpawner> targets2 = Utilities.GetAllWithinRange<MonsterSpawner>(hitPoint, attackRangeFire);
+        foreach (MonsterSpawner target in targets2)
+            target.TakeDamage(attackDamageFire);
+            MonsterSpawnerScript.freezeBool = true;
+
+
+        UIScript.FireAttackStaminaDrain();
     }
 
     // Remove the specified amount of health from this unit, killing it if needed.

@@ -16,6 +16,7 @@ public class UnitUI : MonoBehaviour
     public Image StaminaBar;
     public float Stamina, MaxStamina;
     public float AttackStaminaCost;
+    public float FireAttackStaminaCost;
     public float RunStaminaCost;
     public float ChargeRate;
     private Coroutine recharge;
@@ -40,6 +41,20 @@ public class UnitUI : MonoBehaviour
     public void AttackStaminaDrain()
     {
         Stamina -= AttackStaminaCost;
+        if (Stamina < 0)
+        {
+            Stamina = 0;
+        }
+        StaminaBar.fillAmount = Stamina / MaxStamina;
+
+        //ensures that two coroutines dont occur at the same time
+        if (recharge != null) StopCoroutine(recharge);
+        recharge = StartCoroutine(RechargeStamina());
+    }
+
+    public void FireAttackStaminaDrain()
+    {
+        Stamina -= FireAttackStaminaCost;
         if (Stamina < 0)
         {
             Stamina = 0;

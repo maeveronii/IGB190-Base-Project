@@ -11,8 +11,9 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
     public Monster monsterToSpawn;
     public GameObject monsterSpawnEffect;
 
-    public spawnerUI spawnerUIl;
-    
+    public spawnerUI spawnerUI;
+    public WinState winState;
+    public bool freezeBool = false;
 
     //new settings
     public float health = 2000f;
@@ -27,45 +28,56 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
     private float nextSpawnAt;
     private Player player;
 
-    public GameObject[] monstersArray;
-
     void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
         animator = GetComponentInChildren<Animator>();
         explosionEffect = GameObject.Find("Explosion").GetComponent<ParticleSystem>();
+        spawnerUI.gameObject.SetActive(false);
 
     }
 
 
     void Update()
     {
-        if (monsterToSpawn != null && Time.time > nextSpawnAt)
+        if (freezeBool == false)
         {
-            // Calculate the correct spawn location (given the set spawn radius).
-            Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
-            spawnPosition.y = transform.position.y;
+            animator.SetBool("frozenBoolAnim", false);
+            if (monsterToSpawn != null && Time.time > nextSpawnAt)
+            {
+                // Calculate the correct spawn location (given the set spawn radius).
+                Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
+                spawnPosition.y = transform.position.y;
 
-            // Calculate when the next monster should be spawned.
-            nextSpawnAt = Time.time + timeBetweenSpawns;
+                // Calculate when the next monster should be spawned.
+                nextSpawnAt = Time.time + timeBetweenSpawns;
 
-            // Spawn the monster at the correct spawn location (and make its own game object)
-            GameObject clone = Instantiate(monsterToSpawn.gameObject, spawnPosition, transform.rotation);
+                // Spawn the monster at the correct spawn location (and make its own game object)
+                GameObject clone = Instantiate(monsterToSpawn.gameObject, spawnPosition, transform.rotation);
 
-            //Created clones are children of the monster spawner
-            clone.transform.parent = this.transform;
+                //Created clones are children of the monster spawner
+                clone.transform.parent = this.transform;
 
 
-            // If a spawn effect has been assigned, spawn it.
-            if (monsterSpawnEffect != null)
-                Instantiate(monsterSpawnEffect, spawnPosition, Quaternion.identity);
+                // If a spawn effect has been assigned, spawn it.
+                if (monsterSpawnEffect != null)
+                    Instantiate(monsterSpawnEffect, spawnPosition, Quaternion.identity);
+            }
+        }
+        if (freezeBool == true)
+        {
+            StartCoroutine(freezeWait());
         }
         if (player.isDead)
         {
             gameObject.SetActive(false);
             return;
         }
-        monstersArray = GameObject.FindGameObjectsWithTag("Enemy");
+        if (health < maxHealth)
+        {
+            spawnerUI.gameObject.SetActive(true);
+            StartCoroutine(DoFade());
+        }
     }
 
     public virtual void TakeDamage(float amount)
@@ -82,8 +94,9 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
         {
             monster.Kill();
         }
-       
+
         isDead = true;
+        winState.isWon = true;
         explosionEffect.Play();
         Destroy(gameObject, TIME_BEFORE_CORPSE_DESTROYED);
     }
@@ -93,5 +106,21 @@ public class MonsterSpawner : MonoBehaviour, IDamageable
         return health / maxHealth;
     }
 
+    IEnumerator freezeWait()
+    {
+        animator.SetBool("frozenBoolAnim", true);
+        yield return new WaitForSeconds(5);
+        freezeBool = false;
+    }
+    IEnumerator DoFade()
+    {
+        CanvasGroup canvasGroupSpawner = spawnerUI.GetComponent<CanvasGroup>();
+        while (canvasGroupSpawner.alpha < 1)
+        {
+            //Until the fade in is fully done, fade it in
+            canvasGroupSpawner.alpha += Time.deltaTime / 100;
+            yield return null;
+        }
+    }
 
 }
