@@ -258,8 +258,12 @@ public class Player : MonoBehaviour, IDamageable
     {
         isDead = true;
         agentNavigation.SetDestination(transform.position);
-        animator.SetTrigger("Die");
         script1.isGameOver = true;
+    }
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(3);
     }
 
     // Returns the current health percent of the character (a value between 0.0 and 1.0).
